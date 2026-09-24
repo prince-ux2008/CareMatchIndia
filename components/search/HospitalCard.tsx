@@ -230,7 +230,7 @@ export function HospitalCard({ matchResult, onOpenWhatIf, onSelectMap, userCity 
                   </div>
                   <div className="text-sm sm:text-base font-extrabold text-white">
                     <span className="text-cyan-400 font-mono">
-                      {matchedTreatment.minCost === 0 ? 'Cashless PM-JAY' : formatCostRange(matchedTreatment.minCost, matchedTreatment.maxCost)}
+                      {matchedTreatment.minCost === 0 ? 'Cashless PM-JAY' : formatCostRange(matchedTreatment.minCost, matchedTreatment.maxCost, matchedTreatment.costType)}
                     </span>
                   </div>
                 </div>
@@ -239,7 +239,7 @@ export function HospitalCard({ matchResult, onOpenWhatIf, onSelectMap, userCity 
               {/* Package Inclusions & Budget Status */}
               <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  {matchedTreatment.packageIncludes.slice(0, 3).map((item, idx) => (
+                  {matchedTreatment.packageIncludes?.slice(0, 3).map((item, idx) => (
                     <span key={idx} className="px-2 py-0.5 rounded bg-slate-800/80 text-slate-300 text-[11px] border border-slate-700/60">
                       ✓ {item}
                     </span>
@@ -388,26 +388,36 @@ export function HospitalCard({ matchResult, onOpenWhatIf, onSelectMap, userCity 
                 <Sparkles className="w-4 h-4 text-cyan-400" />
                 <span>AI Matching Explanation:</span>
               </div>
-              <p className="text-slate-300 leading-relaxed">
-                {explanation.plainLanguageSummary}
-              </p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/25 space-y-1">
-                  <div className="font-bold text-emerald-300">✓ Clinical Strengths:</div>
-                  <ul className="text-slate-400 space-y-0.5 list-disc list-inside">
-                    {explanation.positiveFactors.map((f, i) => (
-                      <li key={i}>{f}</li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                {explanation.whyMatch.length > 0 && (
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/25 space-y-1">
+                    <div className="font-bold text-emerald-300">✓ Clinical Strengths & Match:</div>
+                    <ul className="text-slate-400 space-y-0.5 list-disc list-inside">
+                      {explanation.whyMatch.map((f: string, i: number) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-                {explanation.limitations.length > 0 && (
+                {explanation.whatDoesNotMatch.length > 0 && (
                   <div className="p-2.5 rounded-xl bg-slate-900 border border-amber-500/25 space-y-1">
                     <div className="font-bold text-amber-300">⚠️ Considerations / Tariff:</div>
                     <ul className="text-slate-400 space-y-0.5 list-disc list-inside">
-                      {explanation.limitations.map((l, i) => (
+                      {explanation.whatDoesNotMatch.map((l: string, i: number) => (
                         <li key={i}>{l}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {explanation.dataTrustPoints && explanation.dataTrustPoints.length > 0 && (
+                  <div className="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-slate-900 border border-cyan-500/25 space-y-1">
+                    <div className="font-bold text-cyan-300">🔒 Data Trust & Verification:</div>
+                    <ul className="text-slate-400 space-y-0.5 list-disc list-inside">
+                      {explanation.dataTrustPoints.map((tp: string, i: number) => (
+                        <li key={i}>{tp}</li>
                       ))}
                     </ul>
                   </div>

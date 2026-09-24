@@ -159,7 +159,7 @@ function calculateTreatmentScore(
   }
 
   // If multispecialty hospital with broad coverage
-  if (hospital.departments.length >= 6 || hospital.type === 'GOVERNMENT_MEDICAL_COLLEGE' || hospital.type === 'AIIMS_APEX') {
+  if (hospital.departments.length >= 6 || hospital.type === 'GOVERNMENT_MEDICAL_COLLEGE') {
     return { score: 65, matchedTreatment: hospital.treatments[0], isSpecialtyMatch: true };
   }
 

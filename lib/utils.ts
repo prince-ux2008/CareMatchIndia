@@ -16,7 +16,7 @@ export function formatINR(amount: number | null | undefined): string {
   return `₹${amount.toLocaleString('en-IN')}`;
 }
 
-export function formatCostRange(min: number, max: number, costType: string): string {
+export function formatCostRange(min: number, max: number, costType?: string): string {
   if (min <= 0 && max <= 0) return 'Not Available / Free in Govt Scheme';
   if (costType === 'FIXED_GOVT_RATE') {
     return `Govt Rate: ${formatINR(min)}`;
